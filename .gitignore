@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# VSCode
+.vscode/
+
+# Output and temp
+output/
+*.exe
+*.srt
+*.ass
+*.txt
+*.docx
+ffmpeg_info.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python virtualenv
+venv/
+.env/
+
+# Logs
+*.log
