@@ -10,6 +10,7 @@ __pycache__/
 # Output and temp
 dist/
 output/
+build/
 *.exe
 *.srt
 *.ass
