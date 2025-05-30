@@ -2,8 +2,11 @@ import sys
 import os
 import re
 import subprocess
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import filedialog, messagebox
+
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 
 def extract_subtitles(mkv_path, output_txt, track_choice=None, track_list=None):
     ext = os.path.splitext(mkv_path)[1].lower()
@@ -71,29 +74,29 @@ def extract_subtitles(mkv_path, output_txt, track_choice=None, track_list=None):
     messagebox.showinfo("Готово", f'Субтитры сохранены в {output_txt}')
 
 def simple_choice_dialog(title, options):
-    dialog = tk.Toplevel()
+    dialog = ctk.CTkToplevel()
     dialog.title(title)
     dialog.geometry('600x300')
-    var = tk.IntVar(value=0)
+    var = ctk.IntVar(value=0)
     for idx, opt in enumerate(options):
-        tk.Radiobutton(dialog, text=opt, variable=var, value=idx, anchor='w', justify='left').pack(fill='x', padx=10, pady=2)
+        ctk.CTkRadioButton(dialog, text=opt, variable=var, value=idx).pack(fill='x', padx=10, pady=2)
     def ok():
         dialog.destroy()
-    tk.Button(dialog, text='OK', command=ok).pack(pady=10)
+    ctk.CTkButton(dialog, text='OK', command=ok).pack(pady=10)
     dialog.grab_set()
     dialog.wait_window()
     return var.get()
 
 def main():
-    root = tk.Tk()
+    root = ctk.CTk()
     root.title('Извлечение субтитров из MKV')
     root.geometry('700x350')
     root.resizable(True, True)
 
-    mkv_path = tk.StringVar()
-    output_dir = tk.StringVar()
-    filename_var = tk.StringVar(value='')
-    output_path = tk.StringVar()
+    mkv_path = ctk.StringVar()
+    output_dir = ctk.StringVar()
+    filename_var = ctk.StringVar(value='')
+    output_path = ctk.StringVar()
 
     def select_mkv():
         file = filedialog.askopenfilename(title='Выберите видеофайл', filetypes=[('Видео файлы', '*.mkv'), ('MKV files', '*.mkv'), ('Все файлы', '*.*')])
@@ -172,7 +175,7 @@ def main():
         messagebox.showinfo('Готово', f'Субтитры сохранены в {output_docx}')
 
     # --- UI Layout ---
-    frm = tk.Frame(root)
+    frm = ctk.CTkFrame(root)
     frm.pack(fill='both', expand=True, padx=15, pady=10)
 
     frm.grid_columnconfigure(0, weight=100)
@@ -180,30 +183,29 @@ def main():
     for i in range(9):
         frm.grid_rowconfigure(i, weight=1)
 
-    tk.Label(frm, text='MKV видео:').grid(row=0, column=0, sticky='w')
-    mkv_entry = tk.Entry(frm, textvariable=mkv_path)
+    ctk.CTkLabel(frm, text='MKV видео:').grid(row=0, column=0, sticky='w')
+    mkv_entry = ctk.CTkEntry(frm, textvariable=mkv_path)
     mkv_entry.grid(row=1, column=0, sticky='ew', padx=(0,20))
-    btn_file = tk.Button(frm, text='Выбрать файл', command=select_mkv, width=12, height=1)
+    btn_file = ctk.CTkButton(frm, text='Выбрать файл', command=select_mkv, width=120)
     btn_file.grid(row=1, column=1, sticky='e', padx=(0,20))
 
-    tk.Label(frm, text='Папка для субтитров:').grid(row=2, column=0, sticky='w', pady=(10,0))
-    outdir_entry = tk.Entry(frm, textvariable=output_dir)
+    ctk.CTkLabel(frm, text='Папка для субтитров:').grid(row=2, column=0, sticky='w', pady=(10,0))
+    outdir_entry = ctk.CTkEntry(frm, textvariable=output_dir)
     outdir_entry.grid(row=3, column=0, sticky='ew', padx=(0,20))
-    btn_dir = tk.Button(frm, text='Выбрать папку', command=select_output_dir, width=12, height=1)
+    btn_dir = ctk.CTkButton(frm, text='Выбрать папку', command=select_output_dir, width=120)
     btn_dir.grid(row=3, column=1, sticky='e', padx=(0,20))
 
-    tk.Label(frm, text='Имя файла:').grid(row=4, column=0, sticky='w', pady=(10,0))
-    fname_entry = tk.Entry(frm, textvariable=filename_var)
+    ctk.CTkLabel(frm, text='Имя файла:').grid(row=4, column=0, sticky='w', pady=(10,0))
+    fname_entry = ctk.CTkEntry(frm, textvariable=filename_var)
     fname_entry.grid(row=5, column=0, sticky='ew', padx=(0,20))
-    tk.Label(frm, text='Расширение').grid(row=4, column=1, sticky='e', pady=(10,0), padx=(0,5))
-    ext_var = tk.StringVar(value='.txt')
+    ctk.CTkLabel(frm, text='Расширение').grid(row=4, column=1, sticky='e', pady=(10,0), padx=(0,5))
+    ext_var = ctk.StringVar(value='.txt')
     ext_options = ['.txt', '.srt', '.ass', '.docx']
-    ext_menu = tk.OptionMenu(frm, ext_var, *ext_options)
-    ext_menu.config(width=12, height=1)
+    ext_menu = ctk.CTkOptionMenu(frm, variable=ext_var, values=ext_options)
     ext_menu.grid(row=5, column=1, sticky='ew', padx=(0,20))
 
     # --- Выбор дорожки субтитров ---
-    track_var = tk.StringVar(value='Не выбрано')
+    track_var = ctk.StringVar(value='Не выбрано')
     track_options = []
     track_menu = None
     track_label = None
@@ -217,10 +219,9 @@ def main():
             if track_label:
                 track_label.grid_remove()
             track_var.set('Не выбрано')
-            track_label = tk.Label(frm, text='Дорожка субтитров:')
+            track_label = ctk.CTkLabel(frm, text='Дорожка субтитров:')
             track_label.grid(row=7, column=0, sticky='w', padx=(0,5), pady=(10,0))
-            track_menu = tk.OptionMenu(frm, track_var, 'Не выбрано')
-            track_menu.config(width=12)
+            track_menu = ctk.CTkOptionMenu(frm, variable=track_var, values=['Не выбрано'])
             track_menu.grid(row=8, column=0, sticky='w', padx=(0,5))
             extract_btn.grid(row=9, column=0, columnspan=2, sticky='e', padx=(10,0), pady=(15,10))
             return
@@ -245,18 +246,16 @@ def main():
             display_options = [f"{i+1}: {line}" for i, line in enumerate(track_options)]
             max_len = max([len(opt) for opt in display_options]) if display_options else 10
             track_var.set(display_options[0])
-            track_label = tk.Label(frm, text='Дорожка субтитров:')
+            track_label = ctk.CTkLabel(frm, text='Дорожка субтитров:')
             track_label.grid(row=7, column=0, sticky='w', padx=(0,5), pady=(10,0))
-            track_menu = tk.OptionMenu(frm, track_var, *display_options)
-            track_menu.config(width=max_len)
+            track_menu = ctk.CTkOptionMenu(frm, variable=track_var, values=display_options)
             track_menu.grid(row=8, column=0, sticky='w', padx=(0,5))
             extract_btn.grid(row=9, column=0, columnspan=2, sticky='e', padx=(10,0), pady=(15,10))
         else:
             track_var.set('Не выбрано')
-            track_label = tk.Label(frm, text='Дорожка субтитров:')
+            track_label = ctk.CTkLabel(frm, text='Дорожка субтитров:')
             track_label.grid(row=7, column=0, sticky='w', padx=(0,5), pady=(10,0))
-            track_menu = tk.OptionMenu(frm, track_var, 'Не выбрано')
-            track_menu.config(width=12)
+            track_menu = ctk.CTkOptionMenu(frm, variable=track_var, values=['Не выбрано'])
             track_menu.grid(row=8, column=0, sticky='w', padx=(0,5))
             extract_btn.grid(row=9, column=0, columnspan=2, sticky='e', padx=(10,0), pady=(15,10))
 
@@ -266,7 +265,7 @@ def main():
     output_dir.trace_add('write', update_output_path)
     ext_var.trace_add('write', update_output_path)
 
-    extract_btn = tk.Button(frm, text='Извлечь', command=run_extract, bg='#4CAF50', fg='white', width=12, height=1)
+    extract_btn = ctk.CTkButton(frm, text='Извлечь', command=run_extract, fg_color='#4CAF50', text_color='white', width=120)
     extract_btn.grid(row=9, column=0, columnspan=2, sticky='e', padx=(10,0), pady=(15,10))
 
     mkv_entry.xview_moveto(0)
