@@ -8,6 +8,7 @@ __pycache__/
 .vscode/
 
 # Output and temp
+dist/
 output/
 *.exe
 *.srt
