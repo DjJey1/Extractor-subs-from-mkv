@@ -25,17 +25,6 @@
    python extract_subtitles_gui_flet.py
    ```
 
-## Сборка .exe (Windows)
-1. Установите flet:
-   ```sh
-   pip install flet
-   ```
-2. Соберите .exe через flet pack:
-   ```sh
-   flet pack extract_subtitles_gui_flet.py
-   ```
-   Готовый файл появится в папке `dist` или `output`.
-
 ## Использование
 1. Выберите MKV-файл.
 2. Выберите папку и имя для сохранения субтитров.
