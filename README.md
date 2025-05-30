@@ -6,24 +6,35 @@
 - Извлечение субтитров из MKV-файлов (через mkvmerge/mkvextract)
 - Выбор дорожки субтитров через выпадающий список
 - Поддержка форматов: .txt, .srt, .ass, .docx
-- Удобный адаптивный интерфейс на tkinter
+- Современный адаптивный интерфейс на Flet (и customtkinter)
 - Автоматическая обработка кодировки
 
 ## Требования
 - Python 3.7+
 - mkvmerge, mkvextract (установить [MKVToolNix](https://mkvtoolnix.download/downloads.html))
-- pip install chardet python-docx
+- pip install flet chardet python-docx
 
-## Запуск
+## Запуск (Flet GUI)
 1. Установите зависимости:
    ```sh
-   pip install chardet python-docx
+   pip install flet chardet python-docx
    ```
 2. Убедитесь, что mkvmerge и mkvextract доступны в PATH.
-3. Запустите GUI:
+3. Запустите Flet GUI:
    ```sh
-   python extract_subtitles_gui.py
+   python extract_subtitles_gui_flet.py
    ```
+
+## Сборка .exe (Windows)
+1. Установите flet:
+   ```sh
+   pip install flet
+   ```
+2. Соберите .exe через flet pack:
+   ```sh
+   flet pack extract_subtitles_gui_flet.py
+   ```
+   Готовый файл появится в папке `dist` или `output`.
 
 ## Использование
 1. Выберите MKV-файл.
